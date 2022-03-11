@@ -26,7 +26,7 @@ public final class SeekableFileFlacInput extends AbstractFlacLowLevelInput {
     /**
      * The underlying byte-based input stream to read from.
      */
-    private RandomAccessFile raf;
+    private final RandomAccessFile raf;
 
 
     public SeekableFileFlacInput(File file) throws IOException {
@@ -65,7 +65,6 @@ public final class SeekableFileFlacInput extends AbstractFlacLowLevelInput {
     public void close() throws IOException {
         if (this.raf != null) {
             this.raf.close();
-            this.raf = null;
             super.close();
         }
     }

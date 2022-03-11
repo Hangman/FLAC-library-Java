@@ -21,21 +21,15 @@ import java.util.Objects;
  */
 public final class ByteArrayFlacInput extends AbstractFlacLowLevelInput {
 
-    /*---- Fields ----*/
-
     // The underlying byte array to read from.
-    private byte[] data;
-    private int    offset;
-
-    /*---- Constructors ----*/
+    private final byte[] data;
+    private int          offset;
 
 
     public ByteArrayFlacInput(byte[] b) {
         this.data = Objects.requireNonNull(b);
         this.offset = 0;
     }
-
-    /*---- Methods ----*/
 
 
     @Override
@@ -73,7 +67,6 @@ public final class ByteArrayFlacInput extends AbstractFlacLowLevelInput {
     @Override
     public void close() throws IOException {
         if (this.data != null) {
-            this.data = null;
             super.close();
         }
     }

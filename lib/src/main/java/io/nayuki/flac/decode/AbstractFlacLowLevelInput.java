@@ -21,23 +21,15 @@ import java.util.Objects;
 /**
  * A basic implementation of most functionality required by FlacLowLevelInpuut.
  */
-/**
- * @author Matthias
- *
- */
-/**
- * @author Matthias
- *
- */
 public abstract class AbstractFlacLowLevelInput implements FlacLowLevelInput {
 
     /*---- Fields ----*/
 
     // Data from the underlying stream is first stored into this byte buffer before further processing.
-    private long   byteBufferStartPos;
-    private byte[] byteBuffer;
-    private int    byteBufferLen;
-    private int    byteBufferIndex;
+    private long         byteBufferStartPos;
+    private final byte[] byteBuffer;
+    private int          byteBufferLen;
+    private int          byteBufferIndex;
 
     // The buffer of next bits to return to a reader. Note that byteBufferIndex is incremented when byte
     // values are put into the bit buffer, but they might not have been consumed by the ultimate reader yet.
@@ -336,7 +328,6 @@ public abstract class AbstractFlacLowLevelInput implements FlacLowLevelInput {
      */
     @Override
     public void close() throws IOException {
-        this.byteBuffer = null;
         this.byteBufferLen = -1;
         this.byteBufferIndex = -1;
         this.bitBuffer = 0;

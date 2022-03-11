@@ -24,8 +24,6 @@ import java.io.IOException;
  */
 public interface FlacLowLevelInput extends AutoCloseable {
 
-    /*---- Stream position ----*/
-
     /**
      * Returns the total number of bytes in the FLAC file represented by this input stream. This number should not change for the lifetime of this object.
      * Implementing this is optional; it's intended to support blind seeking without the use of seek tables, such as binary searching the whole file. A class
@@ -64,8 +62,6 @@ public interface FlacLowLevelInput extends AutoCloseable {
      * @throws IOException
      */
     void seekTo(long pos) throws IOException;
-
-    /*---- Reading bitwise integers ----*/
 
 
     /**
@@ -107,8 +103,6 @@ public interface FlacLowLevelInput extends AutoCloseable {
      */
     void readRiceSignedInts(int param, long[] result, int start, int end) throws IOException;
 
-    /*---- Reading bytes ----*/
-
 
     /**
      * Returns the next unsigned byte value (in the range [0, 255]) or -1 for EOF. Must be called at a byte boundary (i.e. getBitPosition() == 0), otherwise
@@ -130,8 +124,6 @@ public interface FlacLowLevelInput extends AutoCloseable {
      * @throws IOException
      */
     void readFully(byte[] b) throws IOException;
-
-    /*---- CRC calculations ----*/
 
 
     /**
@@ -157,8 +149,6 @@ public interface FlacLowLevelInput extends AutoCloseable {
      * @return the crc16
      */
     int getCrc16();
-
-    /*---- Miscellaneous ----*/
 
 
     /**

@@ -57,13 +57,13 @@ public final class FlacDecoder implements AutoCloseable {
     public StreamInfo streamInfo;
     public SeekTable  seekTable;
 
-    private FlacLowLevelInput input;
+    private final FlacLowLevelInput input;
 
     private long metadataEndPos;
 
     private FrameDecoder frameDec;
 
-    private FrameInfo frameInfoCache = new FrameInfo();
+    private final FrameInfo frameInfoCache = new FrameInfo();
 
 
     /**
@@ -325,7 +325,6 @@ public final class FlacDecoder implements AutoCloseable {
             this.seekTable = null;
             this.frameDec = null;
             this.input.close();
-            this.input = null;
         }
     }
 

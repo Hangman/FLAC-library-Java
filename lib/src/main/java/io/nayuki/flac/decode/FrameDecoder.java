@@ -34,17 +34,17 @@ public final class FrameDecoder {
     /**
      * This FrameInfo will be reused in {@link #readFrame(int[][], int)} in order to reduce garbage creation.
      */
-    private FrameInfo frameInfoCache = new FrameInfo();
+    private final FrameInfo frameInfoCache = new FrameInfo();
 
     /**
      * Can be changed when there is no active call of readFrame(). Must be not null when readFrame() is called.
      */
-    public FlacLowLevelInput in;
+    public final FlacLowLevelInput in;
 
     /**
      * Can be changed when there is no active call of readFrame(). Must be in the range [4, 32].
      */
-    public int expectedSampleDepth;
+    public final int expectedSampleDepth;
 
     /**
      * Temporary arrays to hold two decoded audio channels (a.k.a. subframes). They have int64 range because the worst case of 32-bit audio encoded in stereo
@@ -52,8 +52,8 @@ public final class FrameDecoder {
      * reading of the FLAC specification. Two buffers are needed for stereo coding modes, but not more than two because all other multi-channel audio is
      * processed independently per channel.
      */
-    private long[] temp0;
-    private long[] temp1;
+    private final long[] temp0;
+    private final long[] temp1;
 
     /**
      * The number of samples (per channel) in the current block/frame being processed. This value is only valid while the method readFrame() is on the call
@@ -75,8 +75,6 @@ public final class FrameDecoder {
         this.temp1 = new long[65536];
         this.currentBlockSize = -1;
     }
-
-    /*---- Methods ----*/
 
 
     /**
