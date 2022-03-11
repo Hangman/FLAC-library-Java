@@ -52,14 +52,6 @@ import io.nayuki.flac.common.StreamInfo;
  * @see FrameDecoder
  * @see FlacLowLevelInput
  */
-/**
- * @author Matthias
- *
- */
-/**
- * @author Matthias
- *
- */
 public final class FlacDecoder implements AutoCloseable {
 
     /*---- Fields ----*/
