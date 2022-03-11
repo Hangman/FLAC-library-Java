@@ -34,7 +34,7 @@ public final class FrameDecoder {
     /**
      * This FrameInfo will be reused in {@link #readFrame(int[][], int)} in order to reduce garbage creation.
      */
-    private FrameInfo frameInfoCache;
+    private FrameInfo frameInfoCache = new FrameInfo();
 
     /**
      * Can be changed when there is no active call of readFrame(). Must be not null when readFrame() is called.

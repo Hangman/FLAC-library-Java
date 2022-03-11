@@ -63,7 +63,7 @@ public final class FlacDecoder implements AutoCloseable {
 
     private FrameDecoder frameDec;
 
-    private FrameInfo frameInfoCache;
+    private FrameInfo frameInfoCache = new FrameInfo();
 
 
     /**
