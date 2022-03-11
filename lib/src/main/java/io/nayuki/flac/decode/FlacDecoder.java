@@ -54,8 +54,6 @@ import io.nayuki.flac.common.StreamInfo;
  */
 public final class FlacDecoder implements AutoCloseable {
 
-    /*---- Fields ----*/
-
     public StreamInfo streamInfo;
     public SeekTable  seekTable;
 
@@ -64,8 +62,6 @@ public final class FlacDecoder implements AutoCloseable {
     private long metadataEndPos;
 
     private FrameDecoder frameDec;
-
-    /*---- Constructors ----*/
 
 
     /**
@@ -86,8 +82,6 @@ public final class FlacDecoder implements AutoCloseable {
         }
         this.metadataEndPos = -1;
     }
-
-    /*---- Methods ----*/
 
 
     /**
