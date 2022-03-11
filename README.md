@@ -3,3 +3,5 @@ This is a fork of [https://github.com/nayuki/FLAC-library-Java](https://github.c
 
 ### Changes made in this fork
 - switched to Gradle
+- fixed javadocs in the decoder part
+- reuse FrameInfo instances to offload the GC

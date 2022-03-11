@@ -63,6 +63,8 @@ public final class FlacDecoder implements AutoCloseable {
 
     private FrameDecoder frameDec;
 
+    private FrameInfo frameInfoCache;
+
 
     /**
      * Constructs a new FLAC decoder to read the given file. This immediately reads the basic header but not metadata blocks.
@@ -284,7 +286,7 @@ public final class FlacDecoder implements AutoCloseable {
             filePos = this.input.getPosition() - 2;
             this.input.seekTo(filePos);
             try {
-                final FrameInfo frame = FrameInfo.readFrame(this.input);
+                final FrameInfo frame = FrameInfo.readFrame(this.input, this.frameInfoCache);
                 return new long[] { this.getSampleOffset(frame), filePos };
             } catch (final DataFormatException e) {
                 // Advance past the sync and search again

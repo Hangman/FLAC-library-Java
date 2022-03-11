@@ -81,6 +81,11 @@ public final class FrameInfo {
      * Constructs a blank frame metadata structure, setting all fields to unknown or invalid values.
      */
     public FrameInfo() {
+        this.reset();
+    }
+
+
+    public void reset() {
         this.frameIndex = -1;
         this.sampleOffset = -1;
         this.numChannels = -1;
@@ -102,6 +107,7 @@ public final class FrameInfo {
      * </p>
      *
      * @param in the input stream to read from (not {@code null})
+     * @param frameInfo
      *
      * @return a new frame info object or {@code null}
      *
@@ -109,15 +115,14 @@ public final class FrameInfo {
      * @throws DataFormatException if the input data contains invalid values
      * @throws IOException if an I/O exception occurred
      */
-    public static FrameInfo readFrame(FlacLowLevelInput in) throws IOException {
+    public static FrameInfo readFrame(FlacLowLevelInput in, FrameInfo frameInfo) throws IOException {
         // Preliminaries
         in.resetCrcs();
         final int temp = in.readByte();
         if (temp == -1) {
             return null;
         }
-        final FrameInfo result = new FrameInfo();
-        result.frameSize = -1;
+        frameInfo.reset();
 
         // Read sync bits
         final int sync = temp << 6 | in.readUint(6); // Uint14
@@ -133,15 +138,15 @@ public final class FrameInfo {
         final int blockSizeCode = in.readUint(4);
         final int sampleRateCode = in.readUint(4);
         final int chanAsgn = in.readUint(4);
-        result.channelAssignment = chanAsgn;
+        frameInfo.channelAssignment = chanAsgn;
         if (chanAsgn < 8) {
-            result.numChannels = chanAsgn + 1;
+            frameInfo.numChannels = chanAsgn + 1;
         } else if (8 <= chanAsgn && chanAsgn <= 10) {
-            result.numChannels = 2;
+            frameInfo.numChannels = 2;
         } else {
             throw new DataFormatException("Reserved channel assignment");
         }
-        result.sampleDepth = FrameInfo.decodeSampleDepth(in.readUint(3));
+        frameInfo.sampleDepth = FrameInfo.decodeSampleDepth(in.readUint(3));
         if (in.readUint(1) != 0) {
             throw new DataFormatException("Reserved bit");
         }
@@ -152,23 +157,23 @@ public final class FrameInfo {
             if (position >>> 31 != 0) {
                 throw new DataFormatException("Frame index too large");
             }
-            result.frameIndex = (int) position;
-            result.sampleOffset = -1;
+            frameInfo.frameIndex = (int) position;
+            frameInfo.sampleOffset = -1;
         } else if (blockStrategy == 1) {
-            result.sampleOffset = position;
-            result.frameIndex = -1;
+            frameInfo.sampleOffset = position;
+            frameInfo.frameIndex = -1;
         } else {
             throw new AssertionError();
         }
 
         // Read variable-length data for some fields
-        result.blockSize = FrameInfo.decodeBlockSize(blockSizeCode, in); // Reads 0 to 2 bytes
-        result.sampleRate = FrameInfo.decodeSampleRate(sampleRateCode, in); // Reads 0 to 2 bytes
+        frameInfo.blockSize = FrameInfo.decodeBlockSize(blockSizeCode, in); // Reads 0 to 2 bytes
+        frameInfo.sampleRate = FrameInfo.decodeSampleRate(sampleRateCode, in); // Reads 0 to 2 bytes
         final int computedCrc8 = in.getCrc8();
         if (in.readUint(8) != computedCrc8) {
             throw new DataFormatException("CRC-8 mismatch");
         }
-        return result;
+        return frameInfo;
     }
 
 

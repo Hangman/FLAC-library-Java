@@ -32,6 +32,11 @@ import io.nayuki.flac.common.FrameInfo;
 public final class FrameDecoder {
 
     /**
+     * This FrameInfo will be reused in {@link #readFrame(int[][], int)} in order to reduce garbage creation.
+     */
+    private FrameInfo frameInfoCache;
+
+    /**
      * Can be changed when there is no active call of readFrame(). Must be not null when readFrame() is called.
      */
     public FlacLowLevelInput in;
@@ -96,7 +101,7 @@ public final class FrameDecoder {
 
         // Parse the frame header to see if one is available
         final long startByte = this.in.getPosition();
-        final FrameInfo meta = FrameInfo.readFrame(this.in);
+        final FrameInfo meta = FrameInfo.readFrame(this.in, this.frameInfoCache);
         if (meta == null) {
             return null;
         }
