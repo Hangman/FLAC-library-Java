@@ -51,7 +51,8 @@ java {
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'de.pottgames'
+        	project.logger.lifecycle('Publishing ' + project.group + ':' + project.name + ':' + project.version)
+            groupId = project.group
             artifactId = project.name
             version = project.version
 

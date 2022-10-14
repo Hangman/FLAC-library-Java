@@ -15,6 +15,7 @@ package io.nayuki.flac.decode;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
 import io.nayuki.flac.common.FrameInfo;
@@ -77,6 +78,25 @@ public final class FlacDecoder implements AutoCloseable {
         // Initialize streams
         Objects.requireNonNull(file);
         this.input = new SeekableFileFlacInput(file);
+
+        // Read basic header
+        if (this.input.readUint(32) != 0x664C6143) {
+            throw new DataFormatException("Invalid magic string");
+        }
+        this.metadataEndPos = -1;
+    }
+
+
+    /**
+     * Constructs a new FLAC decoder to read the given stream. This immediately reads the basic header but not metadata blocks.
+     *
+     * @param stream
+     *
+     * @throws IOException
+     */
+    public FlacDecoder(InputStream stream) throws IOException {
+        Objects.requireNonNull(stream);
+        this.input = new StreamFlacInput(stream);
 
         // Read basic header
         if (this.input.readUint(32) != 0x664C6143) {
